@@ -10,7 +10,7 @@
         <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
         <!-- Title -->
-        <title>Circl - Responsive Admin Dashboard Template</title>
+        <title>MATER - Login</title>
 
         <!-- Styles -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700,800&display=swap" rel="stylesheet">
@@ -18,6 +18,7 @@
         <link href="{{ asset('assets') }}/plugins/font-awesome/css/all.min.css" rel="stylesheet">
         <link href="{{ asset('assets') }}/plugins/perfectscroll/perfect-scrollbar.css" rel="stylesheet">
 
+        <link rel="shortcut icon" href="{{ asset('assets/images/icon.png') }}">
 
         <!-- Theme Styles -->
         <link href="{{ asset('assets') }}/css/main.min.css" rel="stylesheet">
@@ -30,7 +31,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="login-page">
+    <body class="login-page"  style="background-image: url('{{ asset('assets/images/bg.png') }}'); background-positon:center; background-size:cover; background-repeat:no-repeat;">
         <div class='loader'>
             <div class='spinner-grow text-primary' role='status'>
               <span class='sr-only'>Loading...</span>
