@@ -52,7 +52,7 @@ class RegisterController extends Controller
             'nama' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'no_telp' => ['required'],
+            'no_telp' => ['required','numeric'],
         ]);
     }
 

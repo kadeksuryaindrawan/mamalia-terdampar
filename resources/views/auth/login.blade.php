@@ -80,6 +80,9 @@
                                 <button type="submit" class="btn btn-info m-b-xs">Login</button>
                             </div>
                               </form>
+                              <div class="authent-reg">
+                                  <p>Belum memiliki akun pelapor? <a href="{{ url('/register') }}">Daftar</a></p>
+                              </div>
                         </div>
                     </div>
                 </div>

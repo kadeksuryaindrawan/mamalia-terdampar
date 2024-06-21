@@ -31,6 +31,12 @@
         <link href="{{ asset('assets') }}/css/custom.css" rel="stylesheet">
         <link href="{{ asset('assets/css/lightbox.css') }}" rel="stylesheet">
 
+        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/>
+
+        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -91,9 +97,21 @@
                   <li class="{{ (request()->segment(1) == '' || request()->segment(1) == 'home') ? 'active-page' : '' }}">
                     <a href="{{ url('/') }}"><i data-feather="home"></i>Dashboard</a>
                   </li>
-                  <li  class="{{ (request()->segment(1) == 'user') ? 'active-page' : '' }}">
-                    <a href="{{ route('user.index') }}"><i data-feather="user"></i>User</a>
-                  </li>
+                  @if (Auth::user()->role == 'admin')
+                    <li  class="{{ (request()->segment(1) == 'user') ? 'active-page' : '' }}">
+                        <a href="{{ route('user.index') }}"><i data-feather="user"></i>User</a>
+                    </li>
+                    <li  class="{{ (request()->segment(1) == 'masalah') ? 'active-page' : '' }}">
+                        <a href="{{ route('masalah.index') }}"><i data-feather="zap"></i>Masalah</a>
+                    </li>
+                  @endif
+
+                  @if (Auth::user()->role == 'pelapor')
+                    <li  class="{{ (request()->segment(1) == 'masalah') ? 'active-page' : '' }}">
+                        <a href="{{ route('masalah.index') }}"><i data-feather="zap"></i>Masalah</a>
+                    </li>
+                  @endif
+
                 </ul>
             </div>
             @yield('content')
