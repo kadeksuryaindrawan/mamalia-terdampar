@@ -21,10 +21,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-5">
-                                        <h4>Daftar Masalah</h4>
-                                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor')
-                                            <a href="{{ route('masalah.create') }}"><button class="btn btn-primary">Tambah Masalah</button></a>
-                                        @endif
+                                        <h4>Daftar Tindakan</h4>
                                     </div>
                                     <div style="overflow-x: scroll">
                                         <table id="zero-conf" class="display" style="width:100%">
@@ -32,7 +29,6 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Masalah</th>
-                                                    <th>Pelapor</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -41,18 +37,17 @@
                                                 @php
                                                     $no=1;
                                                 @endphp
-                                                @foreach ($problems as $problem)
+                                                @foreach ($tindakans as $tindakan)
                                                     <tr>
                                                         <td>{{ $no++ }}</td>
-                                                        <td>{{ ucwords($problem->masalah) }}</td>
-                                                        <td>{{ ucwords($problem->user->nama) }}</td>
+                                                        <td>{{ ucwords($tindakan->problem->masalah) }}</td>
                                                         <td>
-                                                            @if ($problem->status == 'belum ditangani')
-                                                                <span class="badge bg-danger text-danger">{{ ucwords($problem->status) }}</span>
-                                                            @elseif($problem->status == 'proses penanganan')
-                                                                <span class="badge bg-warning text-warning">{{ ucwords($problem->status) }}</span>
+                                                            @if ($tindakan->problem->status == 'belum ditangani')
+                                                                <span class="badge bg-danger text-danger">{{ ucwords($tindakan->problem->status) }}</span>
+                                                            @elseif($tindakan->problem->status == 'proses penanganan')
+                                                                <span class="badge bg-warning text-warning">{{ ucwords($tindakan->problem->status) }}</span>
                                                             @else
-                                                                <span class="badge bg-success text-success">{{ ucwords($problem->status) }}</span>
+                                                                <span class="badge bg-success text-success">{{ ucwords($tindakan->problem->status) }}</span>
                                                             @endif
 
                                                         </td>
@@ -62,24 +57,18 @@
                                                                     <i data-feather="menu"></i>
                                                                 </button>
                                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                                    <a href="{{ route('masalah.show',$problem->id) }}" class="dropdown-item">Detail</a>
-                                                                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor')
-                                                                        @if ($problem->status == 'belum ditangani')
-                                                                            <a href="{{ route('masalah.edit',$problem->id) }}" class="dropdown-item">Edit</a>
-                                                                            <a href="{{ route('editfotomasalah',$problem->id) }}" class="dropdown-item">Edit Foto</a>
-                                                                            <form action="{{route('masalah.destroy',$problem->id)}}" method="post" onsubmit="return confirm('Yakin hapus masalah?')">
-                                                                                @csrf
-                                                                                @method('delete')
-                                                                                <button class="dropdown-item" style="margin-left: -20px; margin-top:-10px;"> Hapus</button>
-                                                                            </form>
+                                                                        <a href="{{ route('tindakan-detail',$tindakan->problem_id) }}" class="dropdown-item">Lihat Daftar Tindakan</a>
+                                                                        <a href="{{ route('tindakan-terakhir',$tindakan->problem_id) }}" class="dropdown-item">Lihat Tindakan Terakhir</a>
+                                                                        @if (Auth::user()->role == 'yayasan' || Auth::user()->role == 'admin')
+                                                                            @if ($tindakan->problem->status == 'proses penanganan')
+                                                                                <a href="{{ route('tindakan-create',$tindakan->problem_id) }}" class="dropdown-item">Update Tindakan Selanjutnya</a>
+                                                                                <form action="{{route('tindakan-selesai',$tindakan->problem_id)}}" method="post" onsubmit="return confirm('Pastikan terlebih dahulu tindakan anda sudah sepenuhnya selesai dilakukan! Jika anda menyelesaikan tindakan, maka anda tidak dapat melakukan update tindakan selanjutnya! Apakah anda yakin ingin menyelesaikan tindakan? ')">
+                                                                                    @csrf
+                                                                                    @method('put')
+                                                                                    <button class="dropdown-item" style="margin-left: -20px; margin-top:-10px;"> Selesaikan Tindakan</button>
+                                                                                </form>
+                                                                            @endif
                                                                         @endif
-                                                                    @endif
-                                                                    @if (Auth::user()->role == 'yayasan' || Auth::user()->role == 'admin')
-                                                                        @if ($problem->status == 'belum ditangani')
-                                                                            <a href="{{ route('tindakan-create',$problem->id) }}" class="dropdown-item">Ambil Tindakan Pertama</a>
-                                                                        @endif
-                                                                    @endif
-
                                                                 </div>
                                                             </div>
                                                         </td>

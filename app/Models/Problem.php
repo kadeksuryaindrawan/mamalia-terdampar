@@ -26,4 +26,9 @@ class Problem extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function tindakan()
+    {
+        return $this->hasMany(Tindakan::class);
+    }
 }

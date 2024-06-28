@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Problem;
 use App\Models\ProblemImage;
 use App\Models\TemporaryImage;
+use App\Models\Tindakan;
+use App\Models\TindakanImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -19,7 +21,7 @@ class ProblemController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->role == 'admin'){
+        if(Auth::user()->role == 'admin' || Auth::user()->role == 'yayasan'){
             $problems = Problem::orderBy('created_at', 'desc')->get();
         }
         if(Auth::user()->role == 'pelapor'){
@@ -36,7 +38,12 @@ class ProblemController extends Controller
      */
     public function create()
     {
-        return view('masalah.add');
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+            return view('masalah.add');
+        }else{
+            return back();
+        }
+
     }
 
     /**
@@ -47,49 +54,54 @@ class ProblemController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'masalah' => ['required', 'string', 'max:255'],
-            'uraian' => ['required', 'string'],
-            'alamat_kejadian' => ['required', 'string'],
-        ]);
-
-        $temporary_images = TemporaryImage::all();
-
-        if ($validator->fails()) {
-            foreach ($temporary_images as $temporary_image) {
-                $directoryPath = public_path('images/tmp/' . $temporary_image->folder);
-
-                File::deleteDirectory($directoryPath);
-                $temporary_image->delete();
-            }
-            return redirect()->route('masalah.create')->withErrors($validator)->withInput();
-        }
-
-        try {
-            $problem = Problem::create([
-                'user_id' => Auth::user()->id,
-                'masalah' => $request->masalah,
-                'uraian' => $request->uraian,
-                'alamat_kejadian' => $request->alamat_kejadian,
-                'status' => 'belum ditangani',
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+            $validator = Validator::make($request->all(), [
+                'masalah' => ['required', 'string', 'max:255'],
+                'uraian' => ['required', 'string'],
+                'alamat_kejadian' => ['required', 'string'],
             ]);
 
-            foreach ($temporary_images as $temporary_image) {
-                File::copy(public_path('images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), public_path('images/problem/' . $temporary_image->folder . '/' . $temporary_image->file));
-                ProblemImage::create([
-                    'problem_id' => $problem->id,
-                    'name' => $temporary_image->file,
-                    'folder' => $temporary_image->folder
-                ]);
-                $directoryPath = public_path('images/tmp/' . $temporary_image->folder);
+            $temporary_images = TemporaryImage::all();
 
-                File::deleteDirectory($directoryPath);
-                $temporary_image->delete();
+            if ($validator->fails()) {
+                foreach ($temporary_images as $temporary_image) {
+                    $directoryPath = public_path('images/tmp/' . $temporary_image->folder);
+
+                    File::deleteDirectory($directoryPath);
+                    $temporary_image->delete();
+                }
+                return redirect()->route('masalah.create')->withErrors($validator)->withInput();
             }
-            return redirect()->route('masalah.index')->with('success', 'Masalah berhasil ditambah!');
-        } catch (\Throwable $th) {
-            throw $th;
+
+            try {
+                $problem = Problem::create([
+                    'user_id' => Auth::user()->id,
+                    'masalah' => $request->masalah,
+                    'uraian' => $request->uraian,
+                    'alamat_kejadian' => $request->alamat_kejadian,
+                    'status' => 'belum ditangani',
+                ]);
+
+                foreach ($temporary_images as $temporary_image) {
+                    File::copy(public_path('images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), public_path('images/problem/' . $temporary_image->folder . '/' . $temporary_image->file));
+                    ProblemImage::create([
+                        'problem_id' => $problem->id,
+                        'name' => $temporary_image->file,
+                        'folder' => $temporary_image->folder
+                    ]);
+                    $directoryPath = public_path('images/tmp/' . $temporary_image->folder);
+
+                    File::deleteDirectory($directoryPath);
+                    $temporary_image->delete();
+                }
+                return redirect()->route('masalah.index')->with('success', 'Masalah berhasil ditambah!');
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+        }else{
+            return back();
         }
+
     }
 
     /**
@@ -113,8 +125,13 @@ class ProblemController extends Controller
      */
     public function edit($id)
     {
-        $problem = Problem::find($id);
-        return view('masalah.edit', compact('problem'));
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+            $problem = Problem::find($id);
+            return view('masalah.edit', compact('problem'));
+        }else{
+            return back();
+        }
+
     }
 
     /**
@@ -126,28 +143,33 @@ class ProblemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $problem = Problem::find($id);
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+            $problem = Problem::find($id);
 
-        $validator = Validator::make($request->all(), [
-            'masalah' => ['required', 'string', 'max:255'],
-            'uraian' => ['required', 'string'],
-            'alamat_kejadian' => ['required', 'string'],
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->route('masalah.edit', ['problem' => $id])->withErrors($validator)->withInput();
-        }
-
-        try {
-            $problem->update([
-                'masalah' => $request->masalah,
-                'uraian' => $request->uraian,
-                'alamat_kejadian' => $request->alamat_kejadian,
+            $validator = Validator::make($request->all(), [
+                'masalah' => ['required', 'string', 'max:255'],
+                'uraian' => ['required', 'string'],
+                'alamat_kejadian' => ['required', 'string'],
             ]);
-            return redirect()->route('masalah.index')->with('success', 'Masalah berhasil diedit!');
-        } catch (\Throwable $th) {
-            throw $th;
+
+            if ($validator->fails()) {
+                return redirect()->route('masalah.edit', ['problem' => $id])->withErrors($validator)->withInput();
+            }
+
+            try {
+                $problem->update([
+                    'masalah' => $request->masalah,
+                    'uraian' => $request->uraian,
+                    'alamat_kejadian' => $request->alamat_kejadian,
+                ]);
+                return redirect()->route('masalah.index')->with('success', 'Masalah berhasil diedit!');
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+        }else{
+            return back();
         }
+
     }
 
     /**
@@ -158,52 +180,76 @@ class ProblemController extends Controller
      */
     public function destroy($id)
     {
-        $problem = Problem::find($id);
-        $images = ProblemImage::where('problem_id', $problem->id)->get();
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+            $problem = Problem::find($id);
+            $images = ProblemImage::where('problem_id', $problem->id)->get();
 
-        foreach ($images as $image) {
-            File::deleteDirectory(public_path('images/problem/' . $image->folder));
+            foreach ($images as $image) {
+                File::deleteDirectory(public_path('images/problem/' . $image->folder));
+            }
+            ProblemImage::where('problem_id', $problem->id)->delete();
+
+            $tindakans = Tindakan::where('problem_id',$problem->id)->get();
+            foreach($tindakans as $tindakan){
+                $tindakan_images = TindakanImage::where('tindakan_id', $tindakan->id)->get();
+                foreach ($tindakan_images as $tindakan_image) {
+                    File::deleteDirectory(public_path('images/tindakan/' . $tindakan_image->folder));
+                }
+                TindakanImage::where('tindakan_id', $tindakan->id)->delete();
+            }
+            Tindakan::where('problem_id',$problem->id)->delete();
+            $problem->delete();
+
+            return redirect()->back()->with('success', 'Masalah berhasil dihapus!');
+        }else{
+            return back();
         }
-        ProblemImage::where('problem_id', $problem->id)->delete();
-        $problem->delete();
 
-        return redirect()->back()->with('success', 'Masalah berhasil dihapus!');
     }
 
     public function editfotomasalah($id)
     {
-        $problem = Problem::find($id);
-        return view('masalah.editimg', compact('problem'));
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+            $problem = Problem::find($id);
+            return view('masalah.editimg', compact('problem'));
+        }else{
+            return back();
+        }
+
     }
 
     public function editfotomasalahproses(Request $request, $id)
     {
-        $request->validate([
-            'image' => ['required']
-        ]);
-
-        $temporary_images = TemporaryImage::all();
-
-        $images = ProblemImage::where('problem_id', $id)->get();
-        if ($images->count() > 0) {
-            foreach ($images as $image) {
-                File::deleteDirectory(public_path('images/problem/' . $image->folder));
-            }
-            ProblemImage::where('problem_id', $id)->delete();
-        }
-
-        foreach ($temporary_images as $temporary_image) {
-            File::copy(public_path('images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), public_path('images/problem/' . $temporary_image->folder . '/' . $temporary_image->file));
-            ProblemImage::create([
-                'problem_id' => $id,
-                'name' => $temporary_image->file,
-                'folder' => $temporary_image->folder
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+            $request->validate([
+                'image' => ['required']
             ]);
-            $directoryPath = public_path('images/tmp/' . $temporary_image->folder);
 
-            File::deleteDirectory($directoryPath);
-            $temporary_image->delete();
+            $temporary_images = TemporaryImage::all();
+
+            $images = ProblemImage::where('problem_id', $id)->get();
+            if ($images->count() > 0) {
+                foreach ($images as $image) {
+                    File::deleteDirectory(public_path('images/problem/' . $image->folder));
+                }
+                ProblemImage::where('problem_id', $id)->delete();
+            }
+
+            foreach ($temporary_images as $temporary_image) {
+                File::copy(public_path('images/tmp/' . $temporary_image->folder . '/' . $temporary_image->file), public_path('images/problem/' . $temporary_image->folder . '/' . $temporary_image->file));
+                ProblemImage::create([
+                    'problem_id' => $id,
+                    'name' => $temporary_image->file,
+                    'folder' => $temporary_image->folder
+                ]);
+                $directoryPath = public_path('images/tmp/' . $temporary_image->folder);
+
+                File::deleteDirectory($directoryPath);
+                $temporary_image->delete();
+            }
+            return redirect()->route('masalah.index')->with('success', 'Foto Masalah berhasil diedit!');
+        }else{
+            return back();
         }
-        return redirect()->route('masalah.index')->with('success', 'Foto Masalah berhasil diedit!');
     }
 }

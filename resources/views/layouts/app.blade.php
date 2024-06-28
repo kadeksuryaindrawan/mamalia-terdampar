@@ -104,11 +104,29 @@
                     <li  class="{{ (request()->segment(1) == 'masalah') ? 'active-page' : '' }}">
                         <a href="{{ route('masalah.index') }}"><i data-feather="zap"></i>Masalah</a>
                     </li>
+                    <li  class="{{ (request()->segment(1) == 'tindakan') ? 'active-page' : '' }}">
+                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Tindakan</a>
+                    </li>
                   @endif
 
                   @if (Auth::user()->role == 'pelapor')
                     <li  class="{{ (request()->segment(1) == 'masalah') ? 'active-page' : '' }}">
                         <a href="{{ route('masalah.index') }}"><i data-feather="zap"></i>Masalah</a>
+                    </li>
+                  @endif
+
+                  @if (Auth::user()->role == 'yayasan')
+                    <li  class="{{ (request()->segment(1) == 'masalah') ? 'active-page' : '' }}">
+                        <a href="{{ route('masalah.index') }}"><i data-feather="zap"></i>Masalah</a>
+                    </li>
+                    <li  class="{{ (request()->segment(1) == 'tindakan') ? 'active-page' : '' }}">
+                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Tindakan</a>
+                    </li>
+                  @endif
+
+                  @if (Auth::user()->role == 'westerlaken')
+                    <li  class="{{ (request()->segment(1) == 'tindakan') ? 'active-page' : '' }}">
+                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Monitoring Tindakan</a>
                     </li>
                   @endif
 
