@@ -7,7 +7,7 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Form Edit Foto Bukti Tindakan</h5>
+                                    <h5 class="card-title">Form Edit Foto Bukti Penanganan</h5>
                                     <form method="POST" action="{{ route('editfototindakanproses',$tindakan->id) }}" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')

@@ -11,9 +11,9 @@
 
         <!-- Title -->
         @if (request()->segment(1) == '' || request()->segment(1) == 'home')
-            <title>MATER - Dashboard</title>
+            <title>Information System For Complaints And Handling Of Stranded Mammals - Dashboard</title>
         @else
-            <title>MATER - {{ ucwords(request()->segment(1)) }}</title>
+            <title>Information System For Complaints And Handling Of Stranded Mammals - {{ ucwords(request()->segment(1)) }}</title>
         @endif
 
         <!-- Styles -->
@@ -30,6 +30,12 @@
         <link href="{{ asset('assets') }}/css/main.min.css" rel="stylesheet">
         <link href="{{ asset('assets') }}/css/custom.css" rel="stylesheet">
         <link href="{{ asset('assets/css/lightbox.css') }}" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
         <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
         <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/>
@@ -52,13 +58,13 @@
                   <div class="" id="navbarNav">
                     <ul class="navbar-nav" id="leftNav">
                       <li class="nav-item">
-                        <a class="nav-link" id="sidebar-toggle" href="#"><i data-feather="arrow-left"></i></a>
+                        <a class="nav-link" id="sidebar-toggle" href="#"><i data-feather="align-justify"></i></a>
                       </li>
                     </ul>
                     </div>
                     <a href="{{ url('/') }}">
-                        <div class="authent-logo">
-                            <h4 class="text-primary" style="font-weight: 600; margin-top: 10px;">MATER</h4>
+                        <div class="authent-logo d-none d-lg-block">
+                            <h4 class="text-primary" style="font-weight: 600; margin-top: 10px;">Information System For Complaints And Handling Of Stranded Mammals</h4>
                         </div>
                     </a>
                     <div class="" id="headerNav">
@@ -91,8 +97,11 @@
             </div>
             <div class="page-sidebar">
                 <ul class="list-unstyled accordion-menu">
-                    <li class="sidebar-title">
+                    <li class="sidebar-title d-none d-lg-block">
                         Menu
+                    </li>
+                    <li class="sidebar-title d-lg-none d-block">
+                        Information System For Complaints And Handling Of Stranded Mammals
                     </li>
                   <li class="{{ (request()->segment(1) == '' || request()->segment(1) == 'home') ? 'active-page' : '' }}">
                     <a href="{{ url('/') }}"><i data-feather="home"></i>Dashboard</a>
@@ -101,32 +110,32 @@
                     <li  class="{{ (request()->segment(1) == 'user') ? 'active-page' : '' }}">
                         <a href="{{ route('user.index') }}"><i data-feather="user"></i>User</a>
                     </li>
-                    <li  class="{{ (request()->segment(1) == 'masalah') ? 'active-page' : '' }}">
-                        <a href="{{ route('masalah.index') }}"><i data-feather="zap"></i>Masalah</a>
+                    <li  class="{{ (request()->segment(1) == 'laporan') ? 'active-page' : '' }}">
+                        <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>Laporan</a>
                     </li>
-                    <li  class="{{ (request()->segment(1) == 'tindakan') ? 'active-page' : '' }}">
-                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Tindakan</a>
+                    <li  class="{{ (request()->segment(1) == 'penanganan') ? 'active-page' : '' }}">
+                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Penanganan</a>
                     </li>
                   @endif
 
                   @if (Auth::user()->role == 'pelapor')
-                    <li  class="{{ (request()->segment(1) == 'masalah') ? 'active-page' : '' }}">
-                        <a href="{{ route('masalah.index') }}"><i data-feather="zap"></i>Masalah</a>
+                    <li  class="{{ (request()->segment(1) == 'laporan') ? 'active-page' : '' }}">
+                        <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>Laporan</a>
                     </li>
                   @endif
 
                   @if (Auth::user()->role == 'yayasan')
-                    <li  class="{{ (request()->segment(1) == 'masalah') ? 'active-page' : '' }}">
-                        <a href="{{ route('masalah.index') }}"><i data-feather="zap"></i>Masalah</a>
+                    <li  class="{{ (request()->segment(1) == 'laporan') ? 'active-page' : '' }}">
+                        <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>Laporan</a>
                     </li>
-                    <li  class="{{ (request()->segment(1) == 'tindakan') ? 'active-page' : '' }}">
-                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Tindakan</a>
+                    <li  class="{{ (request()->segment(1) == 'penanganan') ? 'active-page' : '' }}">
+                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Penanganan</a>
                     </li>
                   @endif
 
                   @if (Auth::user()->role == 'westerlaken')
-                    <li  class="{{ (request()->segment(1) == 'tindakan') ? 'active-page' : '' }}">
-                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Monitoring Tindakan</a>
+                    <li  class="{{ (request()->segment(1) == 'penanganan') ? 'active-page' : '' }}">
+                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Penanganan</a>
                     </li>
                   @endif
 

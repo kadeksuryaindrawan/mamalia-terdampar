@@ -33,30 +33,30 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'role3:admin,pelapor,yayasan']], function () {
-    Route::resource('masalah', ProblemController::class);
+    Route::resource('laporan', ProblemController::class);
     Route::post('/uploadproblem', UploadTemporaryProblemImageController::class)->name('uploadtemporaryproblem');
     Route::delete('/deleteproblem', DeleteTemporaryProblemImageController::class)->name('deletetemporaryproblem');
-    Route::get('/editfotomasalah/{id}', [ProblemController::class, 'editfotomasalah'])->name('editfotomasalah');
-    Route::put('/editfotomasalahproses/{id}', [ProblemController::class, 'editfotomasalahproses'])->name('editfotomasalahproses');
+    Route::get('/editfotolaporan/{id}', [ProblemController::class, 'editfotomasalah'])->name('editfotomasalah');
+    Route::put('/editfotolaporanproses/{id}', [ProblemController::class, 'editfotomasalahproses'])->name('editfotomasalahproses');
 });
 
 Route::group(['middleware' => ['auth', 'role2:admin,yayasan']], function () {
-    Route::get('/tindakan/create/{id}', [TindakanController::class, 'create'])->name('tindakan-create');
-    Route::post('/tindakan/store/{id}', [TindakanController::class, 'store'])->name('tindakan-store');
-    Route::get('/tindakan/edit/{id}', [TindakanController::class, 'edit'])->name('tindakan-edit');
-    Route::put('/tindakan/update/{id}', [TindakanController::class, 'update'])->name('tindakan-update');
-    Route::delete('/tindakan/destroy/{id}', [TindakanController::class, 'destroy'])->name('tindakan-destroy');
+    Route::get('/penanganan/create/{id}', [TindakanController::class, 'create'])->name('tindakan-create');
+    Route::post('/penanganan/store/{id}', [TindakanController::class, 'store'])->name('tindakan-store');
+    Route::get('/penanganan/edit/{id}', [TindakanController::class, 'edit'])->name('tindakan-edit');
+    Route::put('/penanganan/update/{id}', [TindakanController::class, 'update'])->name('tindakan-update');
+    Route::delete('/penanganan/destroy/{id}', [TindakanController::class, 'destroy'])->name('tindakan-destroy');
     Route::post('/uploadtemporarytindakan', UploadTemporaryTindakanImageController::class)->name('uploadtemporarytindakan');
     Route::delete('/deletetemporarytindakan', DeleteTemporaryTindakanImageController::class)->name('deletetemporarytindakan');
-    Route::get('/tindakan/editfototindakan/{id}', [TindakanController::class, 'editfototindakan'])->name('editfototindakan');
-    Route::put('/tindakan/editfototindakanproses/{id}', [TindakanController::class, 'editfototindakanproses'])->name('editfototindakanproses');
-    Route::put('/tindakan/selesai/{id}', [TindakanController::class, 'selesai'])->name('tindakan-selesai');
+    Route::get('/penanganan/editfototindakan/{id}', [TindakanController::class, 'editfototindakan'])->name('editfototindakan');
+    Route::put('/penanganan/editfototindakanproses/{id}', [TindakanController::class, 'editfototindakanproses'])->name('editfototindakanproses');
+    Route::put('/penanganan/selesai', [TindakanController::class, 'selesai'])->name('tindakan-selesai');
 });
 
 Route::group(['middleware' => ['auth', 'role3:admin,yayasan,westerlaken']], function () {
-    Route::get('/tindakan', [TindakanController::class, 'index'])->name('tindakan-index');
-    Route::get('/tindakan/detail/{id}', [TindakanController::class, 'detail'])->name('tindakan-detail');
-    Route::get('/tindakan/terakhir/{id}', [TindakanController::class, 'tindakanterakhir'])->name('tindakan-terakhir');
+    Route::get('/penanganan', [TindakanController::class, 'index'])->name('tindakan-index');
+    Route::get('/penanganan/detail/{id}', [TindakanController::class, 'detail'])->name('tindakan-detail');
+    Route::get('/penanganan/terakhir/{id}', [TindakanController::class, 'tindakanterakhir'])->name('tindakan-terakhir');
 });
 
 Auth::routes([

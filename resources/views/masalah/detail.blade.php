@@ -7,11 +7,15 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Detail Masalah</h4>
+                                    <h4 class="card-title">Detail Laporan</h4>
                                     <p>Pelapor : {{ ucwords($problem->user->nama) }}</p>
-                                    <p>Masalah : {{ ucwords($problem->masalah) }}</p>
-                                    <p>Uraian : {{ ucfirst($problem->uraian) }}</p>
-                                    <p>Alamat Kejadian : {{ ucfirst($problem->alamat_kejadian) }}</p>
+                                    <p>Laporan : {{ ucwords($problem->masalah) }}</p>
+                                    <p>Uraian Laporan : {{ ucfirst($problem->uraian) }}</p>
+                                    <p>Lokasi Kejadian : </p>
+                                    <div class="col-lg-12 mb-5">
+                                        <div id="map" style="width: 100%;height: 300px;border-radius: 10px;z-index: 1;"></div>
+                                    </div>
+                                    <p>Detail Lokasi Kejadian : {{ ucfirst($problem->alamat_kejadian) }}</p>
                                     <p>Status : @if ($problem->status == 'belum ditangani')
                                                                 <span class="badge bg-danger text-danger">{{ ucwords($problem->status) }}</span>
                                                             @elseif($problem->status == 'proses penanganan')
@@ -36,5 +40,23 @@
                 </div>
 
             </div>
+
+    <script>
+        let mapOptions = {
+            center:[{{ $problem->latitude }}, {{ $problem->longitude }}],
+            zoom:14
+        }
+
+        let map = new L.map('map' , mapOptions);
+
+        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        map.addLayer(layer);
+
+        var latlong = L.marker([{{ $problem->latitude }}, {{ $problem->longitude }}]);
+
+        latlong.addTo(map).bindPopup("<b>{{ ucwords($problem->masalah) }}</b><br><p>{{ ucfirst($problem->uraian) }}</p><a target='_BLANK' href='https://www.google.com/maps?q={{ $problem->latitude }}, {{ $problem->longitude }}'><button class='btn btn-primary btn-sm'>Lihat Pada Maps</button></a>");
+
+
+    </script>
 
 @endsection

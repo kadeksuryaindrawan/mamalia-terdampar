@@ -10,7 +10,7 @@
         <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
         <!-- Title -->
-        <title>MATER - Register</title>
+        <title>Information System For Complaints And Handling Of Stranded Mammals - Register</title>
 
         <!-- Styles -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700,800&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
                     <div class="card login-box-container">
                         <div class="card-body">
                             <div class="authent-logo">
-                                <h4 class="text-primary" style="font-weight: 600;">MATER</h4>
+                                <h4 class="text-primary" style="font-weight: 600;">Information System For Complaints And Handling Of Stranded Mammals</h4>
                             </div>
                             <div class="authent-text">
                                 <p>Pendaftaran Akun!</p>

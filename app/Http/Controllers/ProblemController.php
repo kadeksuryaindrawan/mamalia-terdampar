@@ -58,6 +58,8 @@ class ProblemController extends Controller
             $validator = Validator::make($request->all(), [
                 'masalah' => ['required', 'string', 'max:255'],
                 'uraian' => ['required', 'string'],
+                'longitude' => ['required', 'string'],
+                'latitude' => ['required', 'string'],
                 'alamat_kejadian' => ['required', 'string'],
             ]);
 
@@ -70,7 +72,7 @@ class ProblemController extends Controller
                     File::deleteDirectory($directoryPath);
                     $temporary_image->delete();
                 }
-                return redirect()->route('masalah.create')->withErrors($validator)->withInput();
+                return redirect()->route('laporan.create')->withErrors($validator)->withInput();
             }
 
             try {
@@ -78,6 +80,8 @@ class ProblemController extends Controller
                     'user_id' => Auth::user()->id,
                     'masalah' => $request->masalah,
                     'uraian' => $request->uraian,
+                    'longitude' => $request->longitude,
+                    'latitude' => $request->latitude,
                     'alamat_kejadian' => $request->alamat_kejadian,
                     'status' => 'belum ditangani',
                 ]);
@@ -94,7 +98,7 @@ class ProblemController extends Controller
                     File::deleteDirectory($directoryPath);
                     $temporary_image->delete();
                 }
-                return redirect()->route('masalah.index')->with('success', 'Masalah berhasil ditambah!');
+                return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambah!');
             } catch (\Throwable $th) {
                 throw $th;
             }
@@ -149,20 +153,24 @@ class ProblemController extends Controller
             $validator = Validator::make($request->all(), [
                 'masalah' => ['required', 'string', 'max:255'],
                 'uraian' => ['required', 'string'],
+                'longitude' => ['required', 'string'],
+                'latitude' => ['required', 'string'],
                 'alamat_kejadian' => ['required', 'string'],
             ]);
 
             if ($validator->fails()) {
-                return redirect()->route('masalah.edit', ['problem' => $id])->withErrors($validator)->withInput();
+                return redirect()->route('laporan.edit', ['problem' => $id])->withErrors($validator)->withInput();
             }
 
             try {
                 $problem->update([
                     'masalah' => $request->masalah,
                     'uraian' => $request->uraian,
+                    'longitude' => $request->longitude,
+                    'latitude' => $request->latitude,
                     'alamat_kejadian' => $request->alamat_kejadian,
                 ]);
-                return redirect()->route('masalah.index')->with('success', 'Masalah berhasil diedit!');
+                return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diedit!');
             } catch (\Throwable $th) {
                 throw $th;
             }
@@ -200,7 +208,7 @@ class ProblemController extends Controller
             Tindakan::where('problem_id',$problem->id)->delete();
             $problem->delete();
 
-            return redirect()->back()->with('success', 'Masalah berhasil dihapus!');
+            return redirect()->back()->with('success', 'Laporan berhasil dihapus!');
         }else{
             return back();
         }
@@ -247,7 +255,7 @@ class ProblemController extends Controller
                 File::deleteDirectory($directoryPath);
                 $temporary_image->delete();
             }
-            return redirect()->route('masalah.index')->with('success', 'Foto Masalah berhasil diedit!');
+            return redirect()->route('laporan.index')->with('success', 'Foto Laporan berhasil diedit!');
         }else{
             return back();
         }

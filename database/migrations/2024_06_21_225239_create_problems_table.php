@@ -18,8 +18,11 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('masalah');
             $table->text('uraian');
+            $table->text('longitude');
+            $table->text('latitude');
             $table->text('alamat_kejadian');
             $table->enum('status', ['belum ditangani', 'proses penanganan', 'selesai ditangani']);
+            $table->text('file')->nullable();
             $table->timestamps();
         });
     }

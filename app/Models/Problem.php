@@ -13,8 +13,11 @@ class Problem extends Model
         'user_id',
         'masalah',
         'uraian',
+        'longitude',
+        'latitude',
         'alamat_kejadian',
         'status',
+        'file',
     ];
 
     public function images()

@@ -14,7 +14,7 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Form Edit Foto Masalah</h5>
+                                    <h5 class="card-title">Form Edit Foto Laporan</h5>
                                     <form method="POST" action="{{ route('editfotomasalahproses',$problem->id) }}" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')

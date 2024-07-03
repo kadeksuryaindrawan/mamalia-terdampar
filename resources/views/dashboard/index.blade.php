@@ -50,7 +50,8 @@
                   <div class="col-sm-12 col-xl-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5>Selamat datang di dashboard MATER, <span class="text-success">{{ Auth::user()->nama }}</span></h5>
+                            <h5>Selamat datang di Dashboard Information System For Complaints And Handling Of Stranded Mammals, <br>
+                            <span class="text-success">{{ Auth::user()->nama }}</span></h5>
                             <a href="{{ route('ubahpassword',Auth::user()->id) }}"><button class="btn btn-primary mt-2">Ubah Password</button></a>
                         </div>
                     </div>

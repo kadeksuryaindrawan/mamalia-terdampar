@@ -20,12 +20,43 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title text-center">Tindakan Terakhir Untuk {{ ucwords($problem->masalah) }}</h4> <br>
+                                    <h4 class="card-title text-center">Data Laporan</h4> <br>
+                                    <p>Pelapor : {{ ucwords($problem->user->nama) }}</p>
+                                    <p>Laporan : {{ ucwords($problem->masalah) }}</p>
+                                    <p>Uraian Laporan : {{ ucfirst($problem->uraian) }}</p>
+                                    <p>Lokasi Kejadian : </p>
+                                    <div class="col-lg-12 mb-5">
+                                        <div id="map" style="width: 100%;height: 300px;border-radius: 10px;z-index: 1;"></div>
+                                    </div>
+                                    <p>Detail Lokasi Kejadian : {{ ucfirst($problem->alamat_kejadian) }}</p>
+                                    <p>Dilaporkan Pada : {{ date("d M Y H:i:s",strtotime($problem->created_at)) }}</p>
+                                    <p>Status : @if ($problem->status == 'belum ditangani')
+                                                                <span class="badge bg-danger text-danger">{{ ucwords($problem->status) }}</span>
+                                                            @elseif($problem->status == 'proses penanganan')
+                                                                <span class="badge bg-warning text-warning">{{ ucwords($problem->status) }}</span>
+                                                            @else
+                                                                <span class="badge bg-success text-success">{{ ucwords($problem->status) }}</span>
+                                                            @endif</p>
+                                    @if ($problem->status == 'selesai ditangani')
+                                        <p>File : <a target="__BLANK" href="{{ asset('file/'.$problem->file) }}"><button class="btn btn-primary">Lihat File</button></a></p>
+                                    @endif
+                                    <p>Foto Laporan : </p>
+                                    @foreach ($problem_images as $image)
+                                        <a class="example-image-link"
+                                        href="{{ asset('images/problem/'.$image->folder.'/'.$image->name) }}" data-lightbox="example-1">
+                                        <img style="width: 120px; height:100px; object-fit:cover;" src="{{ asset('images/problem/'.$image->folder.'/'.$image->name) }}" alt=""></a>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title text-center">Penanganan Terakhir Yang Sudah Dilakukan</h4> <br>
                                     @foreach ($tindakans as $tindakan)
                                     @endforeach
-                                    <p>Dilakukan Tindakan Pada : {{ date("d M Y H:i:s",strtotime($tindakan->created_at)) }}</p>
-                                        <p>Tindakan : {{ ucfirst($tindakan->tindakan) }}</p>
-                                        <p>Foto Bukti Tindakan : </p>
+                                        <p>Dilakukan Penanganan Pada : {{ date("d M Y H:i:s",strtotime($tindakan->created_at)) }}</p>
+                                        <p>Penanganan : {{ ucfirst($tindakan->tindakan) }}</p>
+                                        <p>Foto Bukti Penanganan : </p>
                                         @foreach ($tindakan_images[$tindakan->id] as $image)
                                             <a class="example-image-link"
                                             href="{{ asset('images/tindakan/'.$image->folder.'/'.$image->name) }}" data-lightbox="example-1">
@@ -41,4 +72,21 @@
 
             </div>
 
+    <script>
+        let mapOptions = {
+            center:[{{ $problem->latitude }}, {{ $problem->longitude }}],
+            zoom:14
+        }
+
+        let map = new L.map('map' , mapOptions);
+
+        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        map.addLayer(layer);
+
+        var latlong = L.marker([{{ $problem->latitude }}, {{ $problem->longitude }}]);
+
+        latlong.addTo(map).bindPopup("<b>{{ ucwords($problem->masalah) }}</b><br><p>{{ ucfirst($problem->uraian) }}</p><a target='_BLANK' href='https://www.google.com/maps?q={{ $problem->latitude }}, {{ $problem->longitude }}'><button class='btn btn-primary btn-sm'>Lihat Pada Maps</button></a>");
+
+
+    </script>
 @endsection

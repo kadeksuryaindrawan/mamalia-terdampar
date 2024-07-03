@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Problem;
+use App\Models\ProblemImage;
 use App\Models\Tindakan;
 use App\Models\TindakanImage;
 use App\Models\TindakanTemporaryImage;
@@ -74,7 +75,7 @@ class TindakanController extends Controller
             Problem::where('id',$problem_id)->update([
                 'status' => 'proses penanganan'
             ]);
-            return redirect()->route('tindakan-index')->with('success', 'Tindakan berhasil ditambah!');
+            return redirect()->route('tindakan-index')->with('success', 'Penanganan berhasil ditambah!');
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -83,6 +84,7 @@ class TindakanController extends Controller
     public function detail($problem_id)
     {
         $problem = Problem::find($problem_id);
+        $problem_images = ProblemImage::where('problem_id', $problem_id)->get();
         $tindakans = Tindakan::where('problem_id',$problem_id)->orderBy('created_at','asc')->get();
         $tindakan_images = [];
         foreach ($tindakans as $tindakan) {
@@ -90,12 +92,13 @@ class TindakanController extends Controller
             $images = TindakanImage::where('tindakan_id', $tindakan_id)->get();
             $tindakan_images[$tindakan_id] = $images;
         }
-        return view('tindakan.detail',compact('tindakans','problem','tindakan_images'));
+        return view('tindakan.detail',compact('tindakans','problem','tindakan_images','problem_images'));
     }
 
     public function tindakanterakhir($problem_id)
     {
         $problem = Problem::find($problem_id);
+        $problem_images = ProblemImage::where('problem_id', $problem_id)->get();
         $tindakans = Tindakan::where('problem_id', $problem_id)->orderBy('created_at', 'asc')->get();
         $tindakan_images = [];
         foreach ($tindakans as $tindakan) {
@@ -103,7 +106,7 @@ class TindakanController extends Controller
             $images = TindakanImage::where('tindakan_id', $tindakan_id)->get();
             $tindakan_images[$tindakan_id] = $images;
         }
-        return view('tindakan.tindakanterakhir', compact('tindakans', 'problem', 'tindakan_images'));
+        return view('tindakan.tindakanterakhir', compact('tindakans', 'problem', 'tindakan_images','problem_images'));
     }
 
     public function edit($id)
@@ -126,14 +129,14 @@ class TindakanController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('tindakan-edit', ['tindakan' => $id])->withErrors($validator)->withInput();
+            return redirect()->route('tindakan-edit', $id)->withErrors($validator)->withInput();
         }
 
         try {
             $tindakan->update([
                 'tindakan' => $request->tindakan,
             ]);
-            return redirect()->route('tindakan-detail',$tindakan->problem_id)->with('success', 'Tindakan berhasil diedit!');
+            return redirect()->route('tindakan-detail',$tindakan->problem_id)->with('success', 'Penanganan berhasil diedit!');
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -180,7 +183,7 @@ class TindakanController extends Controller
             File::deleteDirectory($directoryPath);
             $temporary_image->delete();
         }
-        return redirect()->route('tindakan-detail',$tindakan->problem_id)->with('success', 'Foto Tindakan berhasil diedit!');
+        return redirect()->route('tindakan-detail',$tindakan->problem_id)->with('success', 'Foto Penanganan berhasil diedit!');
     }
 
     public function destroy($id)
@@ -198,20 +201,38 @@ class TindakanController extends Controller
 
         $tindakan->delete();
 
-        return redirect()->back()->with('success', 'Tindakan berhasil dihapus!');
+        return redirect()->back()->with('success', 'Penanganan berhasil dihapus!');
     }
 
-    public function selesai($id)
+    public function selesai(Request $request)
     {
         if (Auth::user()->role == 'westerlaken') {
             return back();
         }
-        $problem = Problem::find($id);
+        $problem = Problem::find($request->problem_id);
 
-        $problem->update([
-            'status' => 'selesai ditangani'
+        $validator = Validator::make($request->all(), [
+            'file' => ['required', 'file', 'mimes:pdf'],
         ]);
 
-        return redirect()->back()->with('success', 'Tindakan berhasil diselesaikan!');
+        if ($validator->fails()) {
+            return redirect()->route('tindakan-index')->with('error', 'File yang diupload harus pdf!');
+        }
+        try {
+            if ($request->hasFile('file')) {
+                $file = md5(time()) . '_File_Penanganan_Selesai_' . $request->file('file')->getClientOriginalName();
+                $destinationPath = public_path('file');
+                $request->file('file')->move($destinationPath, $file);
+                $problem->update([
+                    'status' => 'selesai ditangani',
+                    'file' => $file
+                ]);
+            }
+
+            return redirect()->route('tindakan-index')->with('success', 'Penanganan berhasil diselesaikan!');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
     }
 }
