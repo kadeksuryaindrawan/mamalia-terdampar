@@ -14,7 +14,7 @@
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                 <label for="masalah" class="form-label">Laporan</label>
-                                                <input type="text" class="form-control" name="masalah" id="masalah" placeholder="Masukkan Masalah" required>
+                                                <input type="text" class="form-control" name="masalah" id="masalah" placeholder="Masukkan Laporan" required>
                                                     @error('masalah')
                                                         <div class="text-danger text-sm">{{ $message }}</div>
                                                     @enderror

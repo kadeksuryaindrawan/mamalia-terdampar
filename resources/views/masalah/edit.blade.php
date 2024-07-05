@@ -15,7 +15,7 @@
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                 <label for="masalah" class="form-label">Laporan</label>
-                                                <input type="text" class="form-control" value="{{ $problem->masalah }}" name="masalah" id="masalah" placeholder="Masukkan Masalah" required>
+                                                <input type="text" class="form-control" value="{{ $problem->masalah }}" name="masalah" id="masalah" placeholder="Masukkan Laporan" required>
                                                     @error('masalah')
                                                         <div class="text-danger text-sm">{{ $message }}</div>
                                                     @enderror
@@ -113,6 +113,7 @@
             let latlng = event.geocode.center;
             map.removeLayer(latlong);
             setMarker(latlng.lat, latlng.lng);
+            map.setView([latlng.lat, latlng.lng], 14);
         }).addTo(map);
 
         function useCurrentLocation() {
