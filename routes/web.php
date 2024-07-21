@@ -29,6 +29,7 @@ Route::get('locale/{locale}', function ($locale) {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/donation', [DashboardController::class, 'donation'])->name('donation');
     Route::get('/home/ubahpassword/{id}', [DashboardController::class, 'ubahPassword'])->name('ubahpassword');
     Route::put('/home/ubahpassword/{id}', [DashboardController::class, 'updatePassword'])->name('updatepassword');
 });

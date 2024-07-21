@@ -51,11 +51,11 @@
                     <div class="card">
                         <div class="card-body">
                             @if (Auth::user()->role == 'pelapor')
-                                <h5>{{ __('messages.welcome_to') }} Dashboard Marine Mammals and Sea Turtles Standing Reporting System, <br>
+                                <h5>{{ __('messages.welcome_to') }} Dashboard Marine Mammals and Sea Turtles Stranding Reporting System, <br>
                                 <span class="text-success">{{ Auth::user()->nama }}</span></h5>
                                 <a href="{{ route('ubahpassword',Auth::user()->id) }}"><button class="btn btn-primary mt-2">{{ __('messages.change_password') }}</button></a>
                             @else
-                                <h5>Selamat datang di Dashboard Marine Mammals and Sea Turtles Standing Reporting System, <br>
+                                <h5>Selamat datang di Dashboard Marine Mammals and Sea Turtles Stranding Reporting System, <br>
                                 <span class="text-success">{{ Auth::user()->nama }}</span></h5>
                                 <a href="{{ route('ubahpassword',Auth::user()->id) }}"><button class="btn btn-primary mt-2">Ubah Password</button></a>
                             @endif

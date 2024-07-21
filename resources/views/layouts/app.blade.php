@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Responsive Admin Dashboard Template">
-        <meta name="keywords" content="admin,dashboard">
-        <meta name="author" content="stacks">
+        <meta name="description" content="Westerlaken Foundation Marine Mammals and Sea Turtles Stranding Reporting">
+        <meta name="keywords" content="westerlaken,foundation,marine,mammals,turtles,sea,stranding,reporting,report">
+        <meta name="author" content="westerlakenfoundation">
         <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
         <!-- Title -->
@@ -137,6 +137,10 @@
                         <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Penanganan</a>
                     </li>
                   @endif
+
+                  <li class="{{ (request()->segment(1) == 'donation') ? 'active-page' : '' }}">
+                    <a href="{{ url('/donation') }}"><i data-feather="dollar-sign"></i>Donation</a>
+                  </li>
 
                 </ul>
             </div>

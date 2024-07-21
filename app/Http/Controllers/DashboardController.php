@@ -23,6 +23,11 @@ class DashboardController extends Controller
 
     }
 
+    public function donation()
+    {
+        return view('dashboard.donation');
+    }
+
     public function ubahPassword($id)
     {
         $user = User::find($id);
