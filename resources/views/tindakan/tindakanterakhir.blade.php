@@ -56,6 +56,7 @@
                                     @endforeach
                                         <p>Dilakukan Penanganan Pada : {{ date("d M Y H:i:s",strtotime($tindakan->created_at)) }}</p>
                                         <p>Penanganan : {{ ucfirst($tindakan->tindakan) }}</p>
+                                        <p>Dilakukan Penanganan Oleh : {{ ucwords($tindakan->oleh) }}</p>
                                         <p>Foto Bukti Penanganan : </p>
                                         @foreach ($tindakan_images[$tindakan->id] as $image)
                                             <a class="example-image-link"

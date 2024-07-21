@@ -24,6 +24,16 @@
 
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
+                                                <label for="oleh" class="form-label">Dilakukan Penanganan Oleh</label>
+                                                <input type="text" name="oleh" placeholder="Masukkan yang melakukan penanganan" id="oleh" class="form-control" required>
+                                                    @error('oleh')
+                                                        <div class="text-danger text-sm">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
                                                 <label for="image">Foto Bukti</label>
                                                 <input type="file" id="image" class="filepond"
                                                     name="image" multiple credits="false" required>

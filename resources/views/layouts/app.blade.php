@@ -11,9 +11,9 @@
 
         <!-- Title -->
         @if (request()->segment(1) == '' || request()->segment(1) == 'home')
-            <title>Information System For Complaints And Handling Of Stranded Mammals - Dashboard</title>
+            <title>Marine Mammals and Sea Turtles Standing Reporting System - Dashboard</title>
         @else
-            <title>Information System For Complaints And Handling Of Stranded Mammals - {{ ucwords(request()->segment(1)) }}</title>
+            <title>Marine Mammals and Sea Turtles Standing Reporting System - {{ ucwords(request()->segment(1)) }}</title>
         @endif
 
         <!-- Styles -->
@@ -24,7 +24,7 @@
         <link href="{{ asset('assets') }}/plugins/apexcharts/apexcharts.css" rel="stylesheet">
         <link href="{{ asset('assets/plugins/DataTables/datatables.min.css') }}" rel="stylesheet">
 
-        <link rel="shortcut icon" href="{{ asset('assets/images/icon.png') }}">
+        <link rel="shortcut icon" href="{{ asset('assets/images/logowesterlaken.png') }}">
 
         <!-- Theme Styles -->
         <link href="{{ asset('assets') }}/css/main.min.css" rel="stylesheet">
@@ -64,24 +64,29 @@
                     </div>
                     <a href="{{ url('/') }}">
                         <div class="authent-logo d-none d-lg-block">
-                            <h4 class="text-primary" style="font-weight: 600; margin-top: 10px;">Information System For Complaints And Handling Of Stranded Mammals</h4>
+                            <h4 class="text-primary" style="font-weight: 600; margin-top: 10px;">Marine Mammals and Sea Turtles Standing Reporting System</h4>
                         </div>
                     </a>
                     <div class="" id="headerNav">
                       <ul class="navbar-nav">
-                        {{-- <li class="nav-item dropdown">
-                          <a class="nav-link search-dropdown" href="#" id="searchDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="search"></i></a>
-                          <div class="dropdown-menu dropdown-menu-end dropdown-lg search-drop-menu" aria-labelledby="searchDropDown">
-                            <form>
-                              <input class="form-control" type="text" placeholder="Type something.." aria-label="Search">
-                            </form>
-                          </div>
-                        </li> --}}
+                        @if (Auth::user()->role == 'pelapor')
+                            <li class="nav-item dropdown">
+                            <a class="nav-link search-dropdown" href="#" id="searchDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="flag"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end search-drop-menu" aria-labelledby="searchDropDown">
+                                    <a class="dropdown-item" href="{{ route('locale','id') }}">Indonesia</a>
+                                    <a class="dropdown-item" href="{{ route('locale','en') }}">English</a>
+                            </div>
+                            </li>
+                        @endif
                         <li class="nav-item dropdown">
                           <a class="nav-link profile-dropdown" href="#" id="profileDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{ asset('assets') }}/images/pic1.jpg" alt=""></a>
                           <div class="dropdown-menu dropdown-menu-end profile-drop-menu" aria-labelledby="profileDropDown">
-                            <p class="dropdown-item">Selamat Datang,<br>{{ Auth::user()->nama }}</p>
-                            <a class="dropdown-item" href="#"><i data-feather="user"></i>Profile</a>
+                            @if (Auth::user()->role == 'pelapor')
+                                <p class="dropdown-item">{{ __('messages.welcome') }},<br>{{ Auth::user()->nama }}</p>
+                            @else
+                                <p class="dropdown-item">Selamat Datang,<br>{{ Auth::user()->nama }}</p>
+                            @endif
+
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
@@ -101,7 +106,7 @@
                         Menu
                     </li>
                     <li class="sidebar-title d-lg-none d-block">
-                        Information System For Complaints And Handling Of Stranded Mammals
+                        Marine Mammals and Sea Turtles Standing Reporting System
                     </li>
                   <li class="{{ (request()->segment(1) == '' || request()->segment(1) == 'home') ? 'active-page' : '' }}">
                     <a href="{{ url('/') }}"><i data-feather="home"></i>Dashboard</a>
@@ -110,7 +115,7 @@
                     <li  class="{{ (request()->segment(1) == 'user') ? 'active-page' : '' }}">
                         <a href="{{ route('user.index') }}"><i data-feather="user"></i>User</a>
                     </li>
-                    <li  class="{{ (request()->segment(1) == 'laporan') ? 'active-page' : '' }}">
+                    <li  class="{{ (request()->segment(1) == 'laporan' || request()->segment(1) == 'editfotolaporan') ? 'active-page' : '' }}">
                         <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>Laporan</a>
                     </li>
                     <li  class="{{ (request()->segment(1) == 'penanganan') ? 'active-page' : '' }}">
@@ -119,21 +124,15 @@
                   @endif
 
                   @if (Auth::user()->role == 'pelapor')
-                    <li  class="{{ (request()->segment(1) == 'laporan') ? 'active-page' : '' }}">
-                        <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>Laporan</a>
+                    <li  class="{{ (request()->segment(1) == 'laporan' || request()->segment(1) == 'editfotolaporan') ? 'active-page' : '' }}">
+                        <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>{{ __('messages.report') }}</a>
                     </li>
                   @endif
 
                   @if (Auth::user()->role == 'yayasan')
-                    <li  class="{{ (request()->segment(1) == 'laporan') ? 'active-page' : '' }}">
+                    <li  class="{{ (request()->segment(1) == 'laporan' || request()->segment(1) == 'editfotolaporan') ? 'active-page' : '' }}">
                         <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>Laporan</a>
                     </li>
-                    <li  class="{{ (request()->segment(1) == 'penanganan') ? 'active-page' : '' }}">
-                        <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Penanganan</a>
-                    </li>
-                  @endif
-
-                  @if (Auth::user()->role == 'westerlaken')
                     <li  class="{{ (request()->segment(1) == 'penanganan') ? 'active-page' : '' }}">
                         <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Penanganan</a>
                     </li>

@@ -40,6 +40,7 @@ class TindakanController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'tindakan' => ['required', 'string'],
+            'oleh' => ['required', 'string', 'max:255'],
         ]);
 
         $temporary_images = TindakanTemporaryImage::all();
@@ -58,6 +59,7 @@ class TindakanController extends Controller
             $tindakan = Tindakan::create([
                 'problem_id' => $problem_id,
                 'tindakan' => $request->tindakan,
+                'oleh' => $request->oleh,
             ]);
 
             foreach ($temporary_images as $temporary_image) {
@@ -126,6 +128,7 @@ class TindakanController extends Controller
         $tindakan = Tindakan::find($id);
         $validator = Validator::make($request->all(), [
             'tindakan' => ['required', 'string'],
+            'oleh' => ['required', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -135,6 +138,7 @@ class TindakanController extends Controller
         try {
             $tindakan->update([
                 'tindakan' => $request->tindakan,
+                'oleh' => $request->oleh,
             ]);
             return redirect()->route('tindakan-detail',$tindakan->problem_id)->with('success', 'Penanganan berhasil diedit!');
         } catch (\Throwable $th) {
@@ -193,13 +197,26 @@ class TindakanController extends Controller
         }
         $tindakan = Tindakan::find($id);
         $images = TindakanImage::where('tindakan_id', $tindakan->id)->get();
+        $problem_id = $tindakan->problem_id;
+        $tindakan_problem_count = Tindakan::where('problem_id',$problem_id)->count();
 
         foreach ($images as $image) {
             File::deleteDirectory(public_path('images/tindakan/' . $image->folder));
         }
         TindakanImage::where('tindakan_id', $tindakan->id)->delete();
 
-        $tindakan->delete();
+        if($tindakan_problem_count == 1){
+            $tindakan->delete();
+            $problem = Problem::find($problem_id);
+            Problem::where('id',$problem_id)->update([
+                'status' => 'belum ditangani'
+            ]);
+            if($problem->file !== null) {
+                unlink(public_path('file/' . $problem->file));
+            }
+        }else{
+            $tindakan->delete(public_path($image->folder));
+        }
 
         return redirect()->back()->with('success', 'Penanganan berhasil dihapus!');
     }

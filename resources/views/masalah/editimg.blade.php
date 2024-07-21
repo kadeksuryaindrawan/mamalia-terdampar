@@ -14,20 +14,35 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Form Edit Foto Laporan</h5>
+                                    @if (Auth::user()->role == 'pelapor')
+                                        <h5 class="card-title">Form Edit {{ __('messages.image') }} {{ __('messages.report') }}</h5>
+                                    @else
+                                        <h5 class="card-title">Form Edit Foto Laporan</h5>
+                                    @endif
+
                                     <form method="POST" action="{{ route('editfotomasalahproses',$problem->id) }}" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
-                                                <label for="image">Foto</label>
+                                                    @if (Auth::user()->role == 'pelapor')
+                                                        <label for="image">{{ __('messages.image') }}</label>
+                                                    @else
+                                                        <label for="image">Foto</label>
+                                                    @endif
+
                                                 <input type="file" id="image" class="filepond"
                                                     name="image" multiple credits="false" required>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        @if (Auth::user()->role == 'pelapor')
+                                            <button type="submit" class="btn btn-primary">{{ __('messages.save') }}</button>
+                                        @else
+                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                        @endif
+
                                       </form>
                                 </div>
                             </div>

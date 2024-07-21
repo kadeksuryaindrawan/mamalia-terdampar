@@ -22,6 +22,16 @@
                                                     @enderror
                                                 </div>
                                             </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                <label for="oleh" class="form-label">Dilakukan Penanganan Oleh</label>
+                                                <input type="text" name="oleh" id="oleh" placeholder="Masukkan yang melakukan penanganan" value="{{ $tindakan->oleh }}" class="form-control" required>
+                                                    @error('oleh')
+                                                        <div class="text-danger text-sm">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Simpan</button>
                                       </form>

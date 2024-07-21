@@ -50,9 +50,16 @@
                   <div class="col-sm-12 col-xl-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5>Selamat datang di Dashboard Information System For Complaints And Handling Of Stranded Mammals, <br>
-                            <span class="text-success">{{ Auth::user()->nama }}</span></h5>
-                            <a href="{{ route('ubahpassword',Auth::user()->id) }}"><button class="btn btn-primary mt-2">Ubah Password</button></a>
+                            @if (Auth::user()->role == 'pelapor')
+                                <h5>{{ __('messages.welcome_to') }} Dashboard Marine Mammals and Sea Turtles Standing Reporting System, <br>
+                                <span class="text-success">{{ Auth::user()->nama }}</span></h5>
+                                <a href="{{ route('ubahpassword',Auth::user()->id) }}"><button class="btn btn-primary mt-2">{{ __('messages.change_password') }}</button></a>
+                            @else
+                                <h5>Selamat datang di Dashboard Marine Mammals and Sea Turtles Standing Reporting System, <br>
+                                <span class="text-success">{{ Auth::user()->nama }}</span></h5>
+                                <a href="{{ route('ubahpassword',Auth::user()->id) }}"><button class="btn btn-primary mt-2">Ubah Password</button></a>
+                            @endif
+
                         </div>
                     </div>
                   </div>

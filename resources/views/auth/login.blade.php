@@ -10,7 +10,7 @@
         <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
         <!-- Title -->
-        <title>Information System For Complaints And Handling Of Stranded Mammals - Login</title>
+        <title>Marine Mammals and Sea Turtles Standing Reporting System - Login</title>
 
         <!-- Styles -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700,800&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
         <link href="{{ asset('assets') }}/plugins/font-awesome/css/all.min.css" rel="stylesheet">
         <link href="{{ asset('assets') }}/plugins/perfectscroll/perfect-scrollbar.css" rel="stylesheet">
 
-        <link rel="shortcut icon" href="{{ asset('assets/images/icon.png') }}">
+        <link rel="shortcut icon" href="{{ asset('assets/images/logowesterlaken.png') }}">
 
         <!-- Theme Styles -->
         <link href="{{ asset('assets') }}/css/main.min.css" rel="stylesheet">
@@ -43,11 +43,12 @@
                     <div class="card login-box-container">
                         <div class="card-body">
                             <div class="authent-logo">
-                                <h4 class="text-primary" style="font-weight: 600;">Information System For Complaints And Handling Of Stranded Mammals</h4>
+                                <a href="{{ url('/') }}"><img src="{{ asset('assets/images/logowesterlaken.png') }}" width="70" alt=""></a>
+                                <h4 class="text-primary" style="font-weight: 600;">Marine Mammals and Sea Turtles Standing Reporting System</h4>
                             </div>
                             <div class="authent-text">
-                                <p>Selamat Datang!</p>
-                                <p>Silahkan masuk menggunakan akun anda.</p>
+                                <p>{{ __('messages.welcome') }}!</p>
+                                <p>{{ __('messages.please_login') }}.</p>
                             </div>
 
                             <form method="POST" action="{{ route('login') }}">
@@ -81,7 +82,10 @@
                             </div>
                               </form>
                               <div class="authent-reg">
-                                  <p>Belum memiliki akun pelapor? <a href="{{ url('/register') }}">Daftar</a></p>
+                                  <p>{{ __('messages.dont_have') }}? <a href="{{ url('/register') }}">Register</a></p>
+                                  <div class="language-switcher mt-3">
+                                        {{ __('messages.language') }} : <a href="{{ route('locale','id') }}">Indonesia</a> | <a href="{{ route('locale','en') }}">English</a>
+                                    </div>
                               </div>
                         </div>
                     </div>

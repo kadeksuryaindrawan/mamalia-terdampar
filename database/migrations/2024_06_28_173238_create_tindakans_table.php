@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('problem_id');
             $table->text('tindakan');
+            $table->string('oleh');
             $table->timestamps();
         });
     }

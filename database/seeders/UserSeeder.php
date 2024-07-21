@@ -38,13 +38,5 @@ class UserSeeder extends Seeder
             'no_telp' => '08761732334',
             'role' => 'yayasan'
         ]);
-
-        User::create([
-            'nama' => 'Westerlaken',
-            'password' => bcrypt('westerlaken123'),
-            'email' => 'westerlaken@gmail.com',
-            'no_telp' => '08761732343',
-            'role' => 'westerlaken'
-        ]);
     }
 }

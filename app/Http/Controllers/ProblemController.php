@@ -23,12 +23,12 @@ class ProblemController extends Controller
     {
         if(Auth::user()->role == 'admin' || Auth::user()->role == 'yayasan'){
             $problems = Problem::orderBy('created_at', 'desc')->get();
+            return view('masalah.index', compact('problems'));
         }
         if(Auth::user()->role == 'pelapor'){
             $problems = Problem::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+            return view('masalah.indexpelapor', compact('problems'));
         }
-
-        return view('masalah.index', compact('problems'));
     }
 
     /**
@@ -38,8 +38,10 @@ class ProblemController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+        if (Auth::user()->role == 'admin') {
             return view('masalah.add');
+        }else if(Auth::user()->role == 'pelapor'){
+            return view('masalah.addpelapor');
         }else{
             return back();
         }
@@ -98,7 +100,16 @@ class ProblemController extends Controller
                     File::deleteDirectory($directoryPath);
                     $temporary_image->delete();
                 }
-                return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambah!');
+                if(Auth::user()->role == 'pelapor'){
+                    if (app()->getLocale() == 'id'){
+                        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambah!');
+                    }else{
+                        return redirect()->route('laporan.index')->with('success', 'Report added successfully!');
+                    }
+                }else{
+                    return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambah!');
+                }
+
             } catch (\Throwable $th) {
                 throw $th;
             }
@@ -118,7 +129,12 @@ class ProblemController extends Controller
     {
         $problem = Problem::find($id);
         $images = ProblemImage::where('problem_id', $id)->get();
-        return view('masalah.detail', compact('problem','images'));
+        if (Auth::user()->role == 'pelapor') {
+            return view('masalah.detailpelapor', compact('problem', 'images'));
+        }else{
+            return view('masalah.detail', compact('problem', 'images'));
+        }
+
     }
 
     /**
@@ -129,9 +145,12 @@ class ProblemController extends Controller
      */
     public function edit($id)
     {
-        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor') {
+        if (Auth::user()->role == 'admin') {
             $problem = Problem::find($id);
             return view('masalah.edit', compact('problem'));
+        }else if(Auth::user()->role == 'pelapor'){
+            $problem = Problem::find($id);
+            return view('masalah.editpelapor', compact('problem'));
         }else{
             return back();
         }
@@ -170,7 +189,16 @@ class ProblemController extends Controller
                     'latitude' => $request->latitude,
                     'alamat_kejadian' => $request->alamat_kejadian,
                 ]);
-                return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diedit!');
+                if (Auth::user()->role == 'pelapor') {
+                    if (app()->getLocale() == 'id') {
+                        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diedit!');
+                    } else {
+                        return redirect()->route('laporan.index')->with('success', 'Report edited successfully!');
+                    }
+                } else {
+                    return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diedit!');
+                }
+
             } catch (\Throwable $th) {
                 throw $th;
             }
@@ -206,9 +234,21 @@ class ProblemController extends Controller
                 TindakanImage::where('tindakan_id', $tindakan->id)->delete();
             }
             Tindakan::where('problem_id',$problem->id)->delete();
+            if ($problem->file !== null) {
+                unlink(public_path('file/' . $problem->file));
+            }
             $problem->delete();
 
-            return redirect()->back()->with('success', 'Laporan berhasil dihapus!');
+            if (Auth::user()->role == 'pelapor') {
+                if (app()->getLocale() == 'id') {
+                    return redirect()->back()->with('success', 'Laporan berhasil dihapus!');
+                } else {
+                    return redirect()->back()->with('success', 'Report deleted successfully!');
+                }
+            } else {
+                return redirect()->back()->with('success', 'Laporan berhasil dihapus!');
+            }
+
         }else{
             return back();
         }
@@ -255,7 +295,16 @@ class ProblemController extends Controller
                 File::deleteDirectory($directoryPath);
                 $temporary_image->delete();
             }
-            return redirect()->route('laporan.index')->with('success', 'Foto Laporan berhasil diedit!');
+            if (Auth::user()->role == 'pelapor') {
+                if (app()->getLocale() == 'id') {
+                    return redirect()->route('laporan.index')->with('success', 'Foto Laporan berhasil diedit!');
+                } else {
+                    return redirect()->route('laporan.index')->with('success', 'Report images edited successfully!');
+                }
+            } else {
+                return redirect()->route('laporan.index')->with('success', 'Foto Laporan berhasil diedit!');
+            }
+
         }else{
             return back();
         }

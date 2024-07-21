@@ -42,7 +42,7 @@
 
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
-                                                <label for="password" class="form-label">Password</label>
+                                                <label for="password" class="form-label">Password (minimal 8 karakter)</label>
                                                 <input type="password" class="form-control" name="password" id="password" placeholder="Masukkan Password" required>
                                                     @error('password')
                                                         <div class="text-danger text-sm">{{ $message }}</div>
@@ -52,7 +52,7 @@
 
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
-                                                <label for="repassword" class="form-label">Re-Password</label>
+                                                <label for="repassword" class="form-label">Password Confirmation</label>
                                                 <input type="password" class="form-control" name="password_confirmation" id="repassword" placeholder="Masukkan Re-password" required>
                                                     @error('password')
                                                         <div class="text-danger text-sm">{{ $message }}</div>
@@ -66,7 +66,7 @@
                                                 <select name="role" id="role" class="form-select" required>
                                                     <option value="" selected disabled>- Pilih Role -</option>
                                                     @php
-                                                        $role = ['admin', 'pelapor', 'yayasan', 'westerlaken'];
+                                                        $role = ['admin', 'pelapor', 'yayasan'];
                                                     @endphp
                                                     @foreach ($role as $role)
                                                         <option value="{{ $role }}">{{ ucfirst($role) }}</option>

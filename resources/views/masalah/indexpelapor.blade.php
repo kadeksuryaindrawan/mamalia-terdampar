@@ -21,9 +21,9 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-5">
-                                        <h4>Daftar Laporan</h4>
+                                        <h4>{{ __('messages.report_list') }}</h4>
                                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'pelapor')
-                                            <a href="{{ route('laporan.create') }}"><button class="btn btn-primary">Tambah Laporan</button></a>
+                                            <a href="{{ route('laporan.create') }}"><button class="btn btn-primary">{{ __('messages.add_report') }}</button></a>
                                         @endif
                                     </div>
                                     <div style="overflow-x: scroll">
@@ -31,8 +31,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Laporan</th>
-                                                    <th>Pelapor</th>
+                                                    <th>{{ __('messages.report') }}</th>
+                                                    <th>{{ __('messages.reporter') }}</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -48,11 +48,11 @@
                                                         <td>{{ ucwords($problem->user->nama) }}</td>
                                                         <td>
                                                             @if ($problem->status == 'belum ditangani')
-                                                                <span class="badge bg-danger text-danger">{{ ucwords($problem->status) }}</span>
+                                                                <span class="badge bg-danger text-danger">{{ __('messages.not_handled') }}</span>
                                                             @elseif($problem->status == 'proses penanganan')
-                                                                <span class="badge bg-warning text-warning">{{ ucwords($problem->status) }}</span>
+                                                                <span class="badge bg-warning text-warning">{{ __('messages.handling_process') }}</span>
                                                             @else
-                                                                <span class="badge bg-success text-success">{{ ucwords($problem->status) }}</span>
+                                                                <span class="badge bg-success text-success">{{ __('messages.completed_handled') }}</span>
                                                             @endif
 
                                                         </td>
@@ -66,11 +66,11 @@
                                                                     @if (Auth::user()->role == 'pelapor')
                                                                         @if ($problem->status == 'belum ditangani')
                                                                             <a href="{{ route('laporan.edit',$problem->id) }}" class="dropdown-item">Edit</a>
-                                                                            <a href="{{ route('editfotomasalah',$problem->id) }}" class="dropdown-item">Edit Foto</a>
-                                                                            <form action="{{route('laporan.destroy',$problem->id)}}" method="post" onsubmit="return confirm('Yakin hapus laporan?')">
+                                                                            <a href="{{ route('editfotomasalah',$problem->id) }}" class="dropdown-item">Edit {{ __('messages.image') }}</a>
+                                                                            <form action="{{route('laporan.destroy',$problem->id)}}" method="post" onsubmit="return confirm('{{ __('messages.are_u_sure') }}')">
                                                                                 @csrf
                                                                                 @method('delete')
-                                                                                <button class="dropdown-item" style="margin-left: -20px; margin-top:-10px;"> Hapus</button>
+                                                                                <button class="dropdown-item" style="margin-left: -20px; margin-top:-10px;"> {{ __('messages.delete') }}</button>
                                                                             </form>
                                                                         @endif
                                                                     @endif

@@ -12,6 +12,7 @@ class Tindakan extends Model
     protected $fillable = [
         'problem_id',
         'tindakan',
+        'oleh',
     ];
 
     public function images()
