@@ -11,9 +11,9 @@
 
         <!-- Title -->
         @if (request()->segment(1) == '' || request()->segment(1) == 'home')
-            <title>Marine Mammals and Sea Turtles Standing Reporting System - Dashboard</title>
+            <title>Marine Mammals and Sea Turtles Stranding Reporting System - Dashboard</title>
         @else
-            <title>Marine Mammals and Sea Turtles Standing Reporting System - {{ ucwords(request()->segment(1)) }}</title>
+            <title>Marine Mammals and Sea Turtles Stranding Reporting System - {{ ucwords(request()->segment(1)) }}</title>
         @endif
 
         <!-- Styles -->
@@ -64,7 +64,7 @@
                     </div>
                     <a href="{{ url('/') }}">
                         <div class="authent-logo d-none d-lg-block">
-                            <h4 class="text-primary" style="font-weight: 600; margin-top: 10px;">Marine Mammals and Sea Turtles Standing Reporting System</h4>
+                            <h4 class="text-primary" style="font-weight: 600; margin-top: 10px;">Marine Mammals and Sea Turtles Stranding Reporting System</h4>
                         </div>
                     </a>
                     <div class="" id="headerNav">
@@ -72,9 +72,9 @@
                         @if (Auth::user()->role == 'pelapor')
                             <li class="nav-item dropdown">
                             <a class="nav-link search-dropdown" href="#" id="searchDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="flag"></i></a>
-                            <div class="dropdown-menu dropdown-menu-end search-drop-menu" aria-labelledby="searchDropDown">
-                                    <a class="dropdown-item" href="{{ route('locale','id') }}">Indonesia</a>
-                                    <a class="dropdown-item" href="{{ route('locale','en') }}">English</a>
+                            <div class="dropdown-menu dropdown-menu-end profile-drop-menu" aria-labelledby="searchDropDown">
+                                <a class="dropdown-item" href="{{ route('locale','id') }}">Indonesia</a>
+                                <a class="dropdown-item" href="{{ route('locale','en') }}">English</a>
                             </div>
                             </li>
                         @endif
@@ -106,7 +106,7 @@
                         Menu
                     </li>
                     <li class="sidebar-title d-lg-none d-block">
-                        Marine Mammals and Sea Turtles Standing Reporting System
+                        Marine Mammals and Sea Turtles Stranding Reporting System
                     </li>
                   <li class="{{ (request()->segment(1) == '' || request()->segment(1) == 'home') ? 'active-page' : '' }}">
                     <a href="{{ url('/') }}"><i data-feather="home"></i>Dashboard</a>

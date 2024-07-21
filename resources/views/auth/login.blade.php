@@ -10,7 +10,7 @@
         <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
         <!-- Title -->
-        <title>Marine Mammals and Sea Turtles Standing Reporting System - Login</title>
+        <title>Marine Mammals and Sea Turtles Stranding Reporting System - Login</title>
 
         <!-- Styles -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700,800&display=swap" rel="stylesheet">
@@ -44,7 +44,7 @@
                         <div class="card-body">
                             <div class="authent-logo">
                                 <a href="{{ url('/') }}"><img src="{{ asset('assets/images/logowesterlaken.png') }}" width="70" alt=""></a>
-                                <h4 class="text-primary" style="font-weight: 600;">Marine Mammals and Sea Turtles Standing Reporting System</h4>
+                                <h4 class="text-primary" style="font-weight: 600;">Marine Mammals and Sea Turtles Stranding Reporting System</h4>
                             </div>
                             <div class="authent-text">
                                 <p>{{ __('messages.welcome') }}!</p>
