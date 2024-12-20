@@ -17,10 +17,6 @@ jobs:
         server: ${{ secrets.FTP_HOST }}
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASS }}
-        port: 21
-        protocol: ftps
-        time-out: 60
-        passive: true
         exclude: |
           public/**
           .env*
