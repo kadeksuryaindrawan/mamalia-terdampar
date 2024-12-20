@@ -18,6 +18,7 @@ jobs:
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASS }}
         exclude: |
+          public/**
           .env*
           **/.git*
           **/.git*/**
