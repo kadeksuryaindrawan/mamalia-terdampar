@@ -44,7 +44,7 @@
                         <div class="card-body">
                             <div class="authent-logo">
                                 <a href="{{ url('/') }}"><img src="{{ asset('assets/images/logowesterlaken.png') }}" width="70" alt=""></a>
-                                <h4 class="text-primary" style="font-weight: 600;">Marine Mammals and Sea Turtles Stranding Reporting System Nih Bos</h4>
+                                <h4 class="text-primary" style="font-weight: 600;">Marine Mammals and Sea Turtles Stranding Reporting System</h4>
                             </div>
                             <div class="authent-text">
                                 <p>{{ __('messages.welcome') }}!</p>
@@ -57,7 +57,7 @@
                                     <div class="form-floating">
 
                                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="name@example.com">
-                                        <label for="email">Email addressw</label>
+                                        <label for="email">Email address</label>
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
