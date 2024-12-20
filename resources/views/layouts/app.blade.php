@@ -109,14 +109,14 @@
                         Marine Mammals and Sea Turtles Stranding Reporting System
                     </li>
                   <li class="{{ (request()->segment(1) == '' || request()->segment(1) == 'home') ? 'active-page' : '' }}">
-                    <a href="{{ url('/') }}"><i data-feather="home"></i>Dashboard</a>
+                    <a href="{{ url('/') }}"><i data-feather="home"></i>Dashboard iNIIII</a>
                   </li>
                   @if (Auth::user()->role == 'admin')
                     <li  class="{{ (request()->segment(1) == 'user') ? 'active-page' : '' }}">
-                        <a href="{{ route('user.index') }}"><i data-feather="user"></i>User</a>
+                        <a href="{{ route('user.index') }}"><i data-feather="user"></i>User INDa</a>
                     </li>
                     <li  class="{{ (request()->segment(1) == 'laporan' || request()->segment(1) == 'editfotolaporan') ? 'active-page' : '' }}">
-                        <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>Laporan</a>
+                        <a href="{{ route('laporan.index') }}"><i data-feather="zap"></i>Laporan hahaha</a>
                     </li>
                     <li  class="{{ (request()->segment(1) == 'penanganan') ? 'active-page' : '' }}">
                         <a href="{{ route('tindakan-index') }}"><i data-feather="activity"></i>Penanganan</a>
