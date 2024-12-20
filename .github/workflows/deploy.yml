@@ -19,7 +19,8 @@ jobs:
         password: ${{ secrets.FTP_PASS }}
         port: 21
         protocol: ftps
-        timeout: 60000
+        time-out: 60
+        passive: true
         exclude: |
           public/**
           .env*
