@@ -17,6 +17,9 @@ jobs:
         server: ${{ secrets.FTP_HOST }}
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASS }}
+        server-dir: mamaliaterdampar/
+        port: 21
+        protocol: ftps
         exclude: |
           public/**
           .env*
