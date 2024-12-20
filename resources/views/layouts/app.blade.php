@@ -64,7 +64,7 @@
                     </div>
                     <a href="{{ url('/') }}">
                         <div class="authent-logo d-none d-lg-block">
-                            <h4 class="text-primary" style="font-weight: 600; margin-top: 10px;">Marine Mammals and Sea Turtles Stranding Reporting System</h4>
+                            <h4 class="text-primary" style="font-weight: 600; margin-top: 10px;">Marine Mammals and Sea Turtles Stranding Reporting System Nich</h4>
                         </div>
                     </a>
                     <div class="" id="headerNav">
@@ -109,7 +109,7 @@
                         Marine Mammals and Sea Turtles Stranding Reporting System
                     </li>
                   <li class="{{ (request()->segment(1) == '' || request()->segment(1) == 'home') ? 'active-page' : '' }}">
-                    <a href="{{ url('/') }}"><i data-feather="home"></i>Dashboard</a>
+                    <a href="{{ url('/') }}"><i data-feather="home"></i>Dashboardssss</a>
                   </li>
                   @if (Auth::user()->role == 'admin')
                     <li  class="{{ (request()->segment(1) == 'user') ? 'active-page' : '' }}">
