@@ -44,7 +44,7 @@
                         <div class="card-body">
                             <div class="authent-logo">
                                 <a href="{{ url('/') }}"><img src="{{ asset('assets/images/logowesterlaken.png') }}" width="70" alt=""></a>
-                                <h4 class="text-primary" style="font-weight: 600;">Marine Mammals and Sea Turtles Stranding Reporting System</h4>
+                                <h4 class="text-primary" style="font-weight: 600;">Marine Mammals and Sea Turtles Stranding Reporting System wadwawd</h4>
                             </div>
                             <div class="authent-text">
                                 <p>{{ __('messages.welcome') }}!</p>
